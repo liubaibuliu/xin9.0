@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>给鑫的一封信</title>
+    <style>
+        /* 全局样式 */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "SimSun", "宋体", serif;
+            background-color: #fff0f5; /* 手绘粉色爱心底色 */
+            background-image: 
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="%23ffc0cb" opacity="0.6"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>'),
+                url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="%23ffb6c1" opacity="0.4"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>');
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #333;
+            overflow-x: hidden; /* 隐藏水平滚动条 */
+        }
+        .container {
+            width: 90%;
+            max-width: 600px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: all 0.5s ease;
+        }
+        .question {
+            font-size: 26px;
+            margin: 20px 0 30px;
+        }
+        .options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap; /* 允许按钮换行 */
+        }
+        .btn {
+            padding: 12px 24px;
+            font-size: 18px;
+            border: 2px solid #ff69b4;
+            background-color: white;
+            color: #ff69b4;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: "SimSun", "宋体", serif;
+        }
+        .btn:hover {
+            background-color: #ff69b4;
+            color: white;
+            transform: translateY(-3px);
+        }
+        .hidden {
+            display: none !important; /* 强制隐藏 */
+        }
+
+        /* 页面3：信件动画样式 */
+        #page3 {
+            overflow: hidden;
+        }
+        .letter-wrapper {
+            position: relative;
+            height: 500px; /* 固定一个高度来展示动画 */
+            display: flex;
+            justify-content: center;
+            align-items: flex-end; /* 让信件从底部开始 */
+            margin-top: 20px;
+        }
+        .letter {
+            position: relative; /* 修改为 relative，确保正常显示 */
+            width: 280px;
+            height: 400px;
+            background-color: #fff8e1; /* 米黄色信纸 */
+            border: 1px solid #e0e0e0;
+            padding: 20px;
+            box-sizing: border-box;
+            overflow-y: auto; /* 内容过多可滚动 */
+            transition: transform 1.5s ease-out, opacity 1s ease-out;
+            transform: translateY(100%); /* 初始在容器外（下方） */
+            opacity: 0;
+            z-index: 10;
+            line-height: 1.8;
+            font-size: 16px;
+            text-align: left;
+        }
+        .letter.opened {
+            transform: translateY(0); /* 打开状态，回到原位 */
+            opacity: 1;
+        }
+        
+        .farewell-message {
+            font-size: 28px;
+            margin: 30px 0;
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="page1" class="container">
+        <div class="question">你是吗？鑫！</div>
+        <div class="options">
+            <button class="btn" id="btnYes1" onclick="goToPage2()">是</button>
+            <button class="btn" id="btnNo1" onclick="swapButtons('btnYes1', 'btnNo1')">不是</button>
+        </div>
+    </div>
+
+    <div id="page2" class="container hidden">
+        <div class="question">这里有你的一封信，要打开它嘛？</div>
+        <div class="options">
+            <button class="btn" id="btnOpen" onclick="goToPage3()">开</button>
+            <button class="btn" id="btnNotOpen" onclick="swapButtons('btnOpen', 'btnNotOpen')">不开</button>
+        </div>
+    </div>
+
+    <div id="page3" class="container hidden">
+        <h1>致鑫的信</h1>
+        <div class="letter-wrapper">
+            <!-- 信封和绳子都已彻底移除 -->
+            <div class="letter" id="letterContent">
+致鑫：
+
+展信安。
+
+写下这封信的时候，心里满是这六年来我们一同走过的点点滴滴。那些一起笑过、闹过、甚至偶尔争执过的日子，如今都成了我最珍贵的回忆。转眼间，我们就要各自奔赴新的旅程，去往不同的城市，开始陌生又充满期待的大学生活。
+
+我知道，我们之间的距离会越来越远，但请你记得，这份距离从不会改变我们之间那些真实而深厚的情谊。你总是不懂得好好照顾自己，身体素质差，却还总不爱吃药。现在你要去军训，一定会很辛苦，天气热、训练强度大，一定要多喝水，注意防晒，如果感觉不舒服千万不要硬撑，及时休息、及时就医。你的健康比什么都重要。
+
+大学生活或许会有不顺心的时候，会迷茫、会孤独、会遇到挫折。但请你记得，我永远在这里。只要你需要，随时都可以来找我——哪怕只是想说说话，或者发一句"我好烦"。当然，如果你不愿开口，也没关系，但我希望你知道，你从来都不是一个人。
+
+最后，我想对你说：谢谢你出现在我的生命里，这六年，因为你而格外明亮。即使今后我们不能常常见面，即使我们走向不同的方向，你永远是我最重要的人之一。我会一直站在你身后，默默支持你、祝福你。
+
+愿你一切安好，愿你被这世界温柔以待。
+
+永远是你的朋友
+2025年9月6日
+            </div>
+        </div>
+        <div class="options">
+            <button class="btn" id="btnLeave" onclick="goToPage4()">离开</button>
+        </div>
+    </div>
+    
+    <div id="page4" class="container hidden">
+        <div class="farewell-message">真的要离开嘛？</div>
+        <div class="options">
+            <button class="btn" id="btnYesLeave" onclick="goToPage5()">是哒！</button>
+            <button class="btn" id="btnNoLeave" onclick="backToPage3()">再等等</button>
+        </div>
+    </div>
+
+    <div id="page5" class="container hidden">
+        <div class="farewell-message">在外面要想颖崽大王哦！</div>
+        <div class="options">
+            <button class="btn" id="btnYesMiss" onclick="window.close()">会哒！</button>
+            <button class="btn" id="btnNoMiss" onclick="swapButtons('btnYesMiss', 'btnNoMiss')">不要！</button>
+        </div>
+    </div>
+
+    <script>
+        function goToPage2() {
+            document.getElementById('page1').classList.add('hidden');
+            document.getElementById('page2').classList.remove('hidden');
+        }
+
+        function goToPage3() {
+            document.getElementById('page2').classList.add('hidden');
+            const page3 = document.getElementById('page3');
+            page3.classList.remove('hidden');
+            
+            const letter = document.getElementById('letterContent');
+
+            // 延迟0.5秒后，信件开始向上展开
+            setTimeout(() => {
+                letter.classList.add('opened');
+            }, 500);
+        }
+        
+        function goToPage4() {
+            document.getElementById('page3').classList.add('hidden');
+            document.getElementById('page4').classList.remove('hidden');
+        }
+
+        function goToPage5() {
+            document.getElementById('page4').classList.add('hidden');
+            document.getElementById('page5').classList.remove('hidden');
+        }
+
+        function backToPage3() {
+             document.getElementById('page4').classList.add('hidden');
+             document.getElementById('page3').classList.remove('hidden');
+        }
+
+        function swapButtons(id1, id2) {
+            const btn1 = document.getElementById(id1);
+            const btn2 = document.getElementById(id2);
+            
+            const tempDiv = document.createElement('div');
+            const parent = btn1.parentNode;
+            const nextSibling = btn1.nextSibling;
+
+            parent.insertBefore(tempDiv, btn1);
+            parent.insertBefore(btn1, btn2);
+            parent.insertBefore(btn2, tempDiv);
+            parent.removeChild(tempDiv);
+        }
+    </script>
+
+</body>
+</html>
